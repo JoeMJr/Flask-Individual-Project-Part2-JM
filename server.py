@@ -243,7 +243,13 @@ def get_customer():
             final_condition = conditions[0]
         else:
             print("Not All variables are empty")
-            final_condition = and_(*conditions)
+            if len(conditions) == 3:
+                print("Test")
+                final_condition = and_(conditions[0], and_(conditions[1], conditions[2]))
+            elif len(conditions) == 4:
+                final_condition = and_(conditions[0], and_(conditions[1], and_(conditions[2], conditions[3])))
+            else:
+                final_condition = and_(*conditions)
 
         # Use the final_condition in the query
         queryC = text(f"SELECT * FROM customer WHERE {final_condition}")
