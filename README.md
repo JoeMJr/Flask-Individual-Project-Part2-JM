@@ -6,7 +6,7 @@ This is the rough but functional front end for the Second part of my individual 
 This was a Project where we had to individually create a web application for a store clerk
 
 # Functionality
-There were 14 Features we had to complete for the application below
+There were 13 Features I had completed for the application below
 Features (User Stories):\
 Landing Page (4):\
 • As a user I want to view top 5 rented films of all Ames\
@@ -26,8 +26,7 @@ last name.\
 • As a user I want to be able to edit a customer’s details\
 • As a user I want to be able to delete a customer if they no longer wish to patron at store\
 • As a user I want to be able to view customer details and see their past and present rental
-history\
-• As a user I want to be able to indicate that a customer has returned a rented movie
+history
 
 # Front end?
 The front end was made it React and is in a seperate repo
