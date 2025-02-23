@@ -18,7 +18,7 @@ Films Page (3):\
 the film\
 • As a user I want to be able to view details of the film\
 • As a user I want to be able to rent a film out to a customer\
-Customer Page (7):\
+Customer Page (6/7):\
 • As a user I want to view a list of all customers (Pref. using paginaAon)\
 • As a user I want the ability to filter/search customers by their customer id, first name or
 last name.\
