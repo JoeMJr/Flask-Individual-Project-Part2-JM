@@ -16,7 +16,7 @@ app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
 
 # The mySQL PART
-app.config['SQLALCHEMY_DATABASE_URI'] = 'databse-goes-here'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:mySQL2++@localhost/sakila'
 
 db.init_app(app)
 
@@ -290,7 +290,7 @@ def add_customer():
         # Validate data (optional, depending on your requirements)
         if not data.get('first_name') or not data.get('last_name') or not data.get('email'):
             return jsonify({"error": "Missing required fields: first_name, last_name, email"}), 400
-
+        # NOTED - Add capitalization to the name and email
         # Create a new customer instance
         new_customer = Customer(
             first_name=data['first_name'],
@@ -336,6 +336,7 @@ def update_customer(customer_id):
         # Debug: print the current customer details to check the existing data
         print("Current customer:", customer)
 
+        # NOTED - Add capitalization to the name and email again
         # Update the fields that are provided in the request body
         updated_fields = False
         if 'firstName' in data:
@@ -515,7 +516,7 @@ def rent_film():
 
     if not film:
         return jsonify({"error": "Film not found"}), 404
-
+    # NOTED - Add return date thing
     available_inventory = Inventory.query.join(Rental, Rental.inventory_id == Inventory.inventory_id) \
                                            .filter(Inventory.film_id == film.film_id) \
                                            .filter(Rental.return_date != None).first()
@@ -529,7 +530,7 @@ def rent_film():
         inventory_id=available_inventory.inventory_id,
         customer_id=customer_id,
         return_date=None,  # Not returned yet
-        staff_id=1  # Add the staff_id here (you can adjust this as needed)
+        staff_id=1  # Placeholder
     )
 
     db.session.add(rental)
