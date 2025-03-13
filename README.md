@@ -6,7 +6,7 @@ This is the rough but functional front end for the Second part of my individual 
 This was a Project where we had to individually create a web application for a store clerk
 
 # Functionality
-There were 13 Features I had completed for the application below
+There were 14 Features I had completed for the application below
 Features (User Stories):\
 Landing Page (4):\
 • As a user I want to view top 5 rented films of all Ames\
@@ -18,7 +18,7 @@ Films Page (3):\
 the film\
 • As a user I want to be able to view details of the film\
 • As a user I want to be able to rent a film out to a customer\
-Customer Page (6/7):\
+Customer Page (7/7):\
 • As a user I want to view a list of all customers (Pref. using paginaAon)\
 • As a user I want the ability to filter/search customers by their customer id, first name or
 last name.\
@@ -26,7 +26,11 @@ last name.\
 • As a user I want to be able to edit a customer’s details\
 • As a user I want to be able to delete a customer if they no longer wish to patron at store\
 • As a user I want to be able to view customer details and see their past and present rental
-history
+history\
+• As a user I want to be able to indicate that a customer has returned a rented movie
 
 # Front end?
 The front end was made it React and is in a seperate repo
+
+# Additional Notes
+I Finally added the return film section, there is now a patch method to return a film using today's date

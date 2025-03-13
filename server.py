@@ -16,7 +16,7 @@ app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
 
 # The mySQL PART
-app.config['SQLALCHEMY_DATABASE_URI'] = 'databaseandpassword'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'databaseanditspassowrd'
 
 db.init_app(app)
 
