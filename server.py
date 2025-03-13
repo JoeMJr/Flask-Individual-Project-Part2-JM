@@ -16,7 +16,7 @@ app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
 
 # The mySQL PART
-app.config['SQLALCHEMY_DATABASE_URI'] = 'databasepasswordanddatabasegohere'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'databaseandpassword'
 
 db.init_app(app)
 
@@ -49,6 +49,7 @@ class Inventory(db.Model):
     __tablename__ = 'inventory'
     inventory_id = db.Column(db.Integer, primary_key=True)
     film_id = db.Column(db.Integer, db.ForeignKey('film.film_id'))
+    last_update = db.Column(db.DateTime, default=datetime.datetime.now())
 
 class Film(db.Model):
     __tablename__ = 'film'
@@ -376,7 +377,7 @@ def update_customer(customer_id):
             db.session.commit()
             print("Updated data:", customer.store_id, "add:", customer.address_id)
             print("Updated customer:", customer.store_id, "add:", customer.address_id)
-            # Return a success response
+            
             return jsonify({"message": "Customer updated successfully!"}), 200
         else:
             return jsonify({"message": "No fields were updated."}), 400
@@ -540,7 +541,6 @@ def rent_film():
 #
 #
 #
-
 @app.route('/customer-rent-details/<int:customer_id>', methods=['GET'])
 def customer_rent_details(customer_id):
     # Find the customer based on customer_id
@@ -581,6 +581,65 @@ def customer_rent_details(customer_id):
     rentdets = [dict(zip(columns, row)) for row in result.fetchall()]
 
     return jsonify(rentdets)  # Return the result as a string or render it in a template
+#
+#
+#
+@app.route('/customer-rent-return', methods=['PATCH'])
+def customer_rent_return():
+    '''
+    try:
+        customer_id = request.json.get('customer_id')
+        film_title = request.json.get('movie_title')
+
+        print("Cust Id:", str(customer_id) + ", Film: ", film_title)
+
+        if not customer_id or not film_title:
+            return jsonify({"error": "customer_id and film_title are required."}), 400
+        
+        testval = str(customer_id) + ": (" + film_title + ")"
+        print("This happened:", str(testval))
+        return jsonify({"I worked": str(testval)}), 200
+    except Exception as e:
+        # Rollback the session in case of error
+        db.session.rollback()
+        print("Error:", str(e))
+        return jsonify({"error": str(e)}), 500'
+    '''
+    try:
+        # Get customer_id and film_title from the request
+        customer_id = request.json.get('customer_id')
+        film_title = request.json.get('movie_title')
+
+        if not customer_id or not film_title:
+            return jsonify({"error": "customer_id and film_title are required."}), 400
+
+        # Find the rental record that matches the customer and film
+        rental = db.session.query(Rental).join(Inventory).join(Film).filter(
+            Rental.customer_id == customer_id,
+            Film.title == film_title,
+            Rental.return_date.is_(None)  # Active rental not returned yet
+        ).first()
+
+        if not rental:
+            return jsonify({"error": "No active rental found for this customer and film."}), 404
+
+        # Update return_date
+        rental.return_date = datetime.datetime.now()
+
+        # Update inventory last_update
+        inventory = Inventory.query.filter_by(inventory_id=rental.inventory_id).first()
+        if inventory:
+            inventory.last_update = datetime.datetime.now()
+
+        # Commit the transaction
+        db.session.commit()
+
+        return jsonify({"message": f"Film '{film_title}' returned successfully by customer {customer_id}."}), 200
+
+    except Exception as e:
+        db.session.rollback()
+        print("Error:", str(e))
+        return jsonify({"error": str(e)}), 500
 
 #
 #
